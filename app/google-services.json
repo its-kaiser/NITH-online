@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "425714225886",
+    "project_id": "nith-online-60e07",
+    "storage_bucket": "nith-online-60e07.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:425714225886:android:1db9683e076babd272a84f",
+        "android_client_info": {
+          "package_name": "com.example.nithonline"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "425714225886-53cp8k89jkimcq501d7tn91ls9bdd8vg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD7ta7rHV7yX2yOZ_399tz6PcWAGbv_OXE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "425714225886-53cp8k89jkimcq501d7tn91ls9bdd8vg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

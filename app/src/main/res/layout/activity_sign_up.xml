@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp"
+    tools:context=".SignUp">
+
+    <Button
+        android:id="@+id/bt_dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="70dp"
+        android:text="@string/profile_picture"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:background="@drawable/img_background"/>
+
+    <EditText
+        android:id="@+id/et_name"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@id/bt_dp"
+        android:layout_marginTop="48dp"
+        android:background="@drawable/et_background"
+        android:ems="10"
+        android:hint="@string/username"
+        android:inputType="textEmailAddress"
+        android:paddingStart="15dp" />
+    <EditText
+        android:id="@+id/et_email"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@id/et_name"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/et_background"
+        android:ems="10"
+        android:hint="@string/email"
+        android:inputType="textEmailAddress"
+        android:paddingStart="15dp" />
+
+    <EditText
+        android:id="@+id/et_password"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@id/et_email"
+        android:ems="10"
+        android:background="@drawable/et_background"
+        android:hint="@string/password"
+        android:inputType="textPassword"
+        android:layout_marginTop="10dp"
+        android:paddingStart="15dp"/>
+
+    <Button
+        android:id="@+id/bt_signup"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/et_password"
+        android:text="@string/sign_up"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bt_background"
+        android:textColor="@color/white"
+        android:textSize="20sp"/>
+    <View
+        android:id="@+id/divider"
+        style="@style/Widget.Cupcake.Divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_below="@id/bt_signup"/>
+    <TextView
+        android:id="@+id/have_an_account"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/divider"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text="@string/already_have_an_account"
+        android:textColor="@color/yellow"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/iv_profile_pic"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        app:civ_border_width="4dp"
+        android:layout_alignStart="@+id/bt_dp"
+        android:layout_alignTop="@+id/bt_dp"
+        android:layout_alignEnd="@+id/bt_dp"
+        android:layout_alignBottom="@+id/bt_dp"
+        android:layout_marginStart="-1dp"
+        android:layout_marginTop="-1dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginBottom="1dp" />
+</RelativeLayout>
