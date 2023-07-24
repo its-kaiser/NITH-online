@@ -1,11 +1,11 @@
 package com.example.nithonline
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.nithonline.adapter.NewMessageAdapter
 import com.example.nithonline.model.User
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -13,15 +13,14 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
-import com.xwray.groupie.Item
 
 class NewMessage : AppCompatActivity() {
 
     companion object{
         private const val TAG="NewMessage"
+        const val USER_KEY="USER_KEY"
     }
     private var db = Firebase.database
     private lateinit var rvNewMessage :RecyclerView
@@ -53,6 +52,16 @@ class NewMessage : AppCompatActivity() {
                         adapter.add(NewMessageAdapter(user))
                     }
                 }
+                adapter.setOnItemClickListener { item, view ->
+
+                    val userItem = item as NewMessageAdapter
+                    val intent = Intent(view.context,ChatActivity::class.java)
+                    intent.putExtra(USER_KEY,userItem.user)
+                    startActivity(intent)
+
+                    finish()
+                }
+                
                 rvNewMessage.adapter=adapter
             }
             override fun onCancelled(error: DatabaseError) {
@@ -60,21 +69,5 @@ class NewMessage : AppCompatActivity() {
             }
 
         })
-    }
-}
-
-class NewMessageAdapter(private val user: User): Item<GroupieViewHolder>(){
-
-    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
-        val tvNewUsername = viewHolder.itemView.findViewById<TextView>(R.id.tv_new_username)
-        val ivNewDp = viewHolder.itemView.findViewById<ImageView>(R.id.iv_new_dp)
-
-        tvNewUsername.text= user.userName
-        Picasso.get().load(user.imgUrl).into(ivNewDp)
-
-    }
-
-    override fun getLayout(): Int {
-        return R.layout.new_message_item
     }
 }

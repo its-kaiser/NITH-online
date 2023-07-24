@@ -8,4 +8,6 @@
     <string name="don_t_have_an_account_sign_up">Don\'t have an account? Sign up.</string>
     <string name="already_have_an_account">Already have an account?</string>
     <string name="profile_picture">Profile photo</string>
+    <string name="message">Message</string>
+    <string name="send">Send</string>
 </resources>
