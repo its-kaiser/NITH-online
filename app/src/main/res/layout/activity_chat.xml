@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ChatActivity"
     android:background="@android:color/white">
-
     <EditText
         android:id="@+id/et_message"
         android:layout_width="0dp"
@@ -14,8 +13,10 @@
         android:layout_marginStart="8dp"
         android:layout_marginBottom="8dp"
         android:ems="10"
-        android:background="@color/white"
+        android:background="@android:color/white"
+        android:textColor="@android:color/black"
         android:hint="@string/message"
+        android:importantForAutofill="no"
         android:inputType="text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/bt_send"
