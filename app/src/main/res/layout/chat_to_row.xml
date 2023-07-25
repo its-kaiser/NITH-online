@@ -21,8 +21,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:background="@drawable/et_background"
+        android:background="@drawable/mg_background"
         android:padding="16dp"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toStartOf="@+id/iv_to_row"
         app:layout_constraintTop_toTopOf="@+id/iv_to_row"
         tools:text="message from your friend" />

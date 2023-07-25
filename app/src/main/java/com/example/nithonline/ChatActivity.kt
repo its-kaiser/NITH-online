@@ -6,10 +6,15 @@ import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import androidx.recyclerview.widget.RecyclerView
+import com.example.nithonline.adapter.MessageFrom
+import com.example.nithonline.adapter.MessageTo
 import com.example.nithonline.model.Message
 import com.example.nithonline.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.ChildEventListener
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
@@ -27,6 +32,7 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var etMessage :EditText
     private lateinit var mAuth: FirebaseAuth
     private var user :User? =null
+    private var adapter =GroupAdapter<GroupieViewHolder>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
@@ -36,7 +42,56 @@ class ChatActivity : AppCompatActivity() {
         db= FirebaseDatabase.getInstance()
         etMessage=findViewById(R.id.et_message)
         mAuth=FirebaseAuth.getInstance()
+        rvChatLog.adapter=adapter
 
+        settingNameInActionBar()
+        listenForMessages()
+        btSend.setOnClickListener{
+            Log.i(TAG,"Tried sending a message")
+
+            sendMessage()
+        }
+    }
+
+    private fun listenForMessages() {
+        val ref=db.getReference("/messages")
+
+        //for real time changes
+        ref.addChildEventListener(object :ChildEventListener{
+            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                val chatMessage = snapshot.getValue(Message::class.java)
+
+                if(chatMessage!=null){
+                    Log.i(TAG, chatMessage?.text.toString())
+
+                    if(chatMessage.fromId==mAuth.uid){
+                        adapter.add(MessageTo(chatMessage.text))
+                    }else{
+                        adapter.add(MessageFrom(chatMessage.text))
+                    }
+                }
+            }
+
+            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+
+            }
+
+            override fun onChildRemoved(snapshot: DataSnapshot) {
+
+            }
+
+            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
+
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+
+        })
+    }
+
+    private fun settingNameInActionBar() {
         //check if the user class has hasExtra
         if(intent.hasExtra(NewMessage.USER_KEY)){
             //retrieving the parcelable object into user
@@ -44,14 +99,6 @@ class ChatActivity : AppCompatActivity() {
         }
         if(user!=null){
             supportActionBar?.title= user?.userName
-        }
-        val adapter = GroupAdapter<GroupieViewHolder>()
-        rvChatLog.adapter=adapter
-
-        btSend.setOnClickListener{
-            Log.i(TAG,"Tried sending a message")
-
-            sendMessage()
         }
     }
 
