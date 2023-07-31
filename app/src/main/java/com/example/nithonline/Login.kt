@@ -8,9 +8,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.ktx.Firebase
 
 class Login : AppCompatActivity() {
 
@@ -60,7 +58,7 @@ class Login : AppCompatActivity() {
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithEmail:success")
-                    val intent = Intent(this,MainActivity::class.java)
+                    val intent = Intent(this,LatestMessageActivity::class.java)
                     startActivity(intent)
 
                 } else {

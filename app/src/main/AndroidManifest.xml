@@ -17,17 +17,17 @@
             android:exported="false">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".LatestMessageActivity" />
         </activity>
         <activity
             android:name=".NewMessage"
             android:exported="true">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".LatestMessageActivity" />
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".LatestMessageActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

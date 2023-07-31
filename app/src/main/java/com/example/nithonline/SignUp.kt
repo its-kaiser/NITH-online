@@ -129,7 +129,7 @@ class SignUp : AppCompatActivity() {
             .addOnSuccessListener {
                 Log.i(TAG,"User Info Uploaded to database")
 
-                val intent = Intent(this,MainActivity::class.java)
+                val intent = Intent(this,LatestMessageActivity::class.java)
                 //clearing the activities in the stack
                 intent.flags=Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)

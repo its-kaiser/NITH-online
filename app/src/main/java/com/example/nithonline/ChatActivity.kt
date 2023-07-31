@@ -11,7 +11,6 @@ import com.example.nithonline.adapter.MessageTo
 import com.example.nithonline.model.Message
 import com.example.nithonline.model.User
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -31,7 +30,7 @@ class ChatActivity : AppCompatActivity() {
     private var db = Firebase.database
     private lateinit var etMessage :EditText
     private lateinit var mAuth: FirebaseAuth
-    private var user :User? =null
+    private var toUser :User? =null
     private var adapter =GroupAdapter<GroupieViewHolder>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,7 +53,9 @@ class ChatActivity : AppCompatActivity() {
     }
 
     private fun listenForMessages() {
-        val ref=db.getReference("/messages")
+        val fromId=mAuth.uid
+        val toId=toUser?.uid
+        val ref=db.getReference("/user-messages/$fromId/$toId")
 
         //for real time changes
         ref.addChildEventListener(object :ChildEventListener{
@@ -65,9 +66,11 @@ class ChatActivity : AppCompatActivity() {
                     Log.i(TAG, chatMessage?.text.toString())
 
                     if(chatMessage.fromId==mAuth.uid){
-                        adapter.add(MessageTo(chatMessage.text))
+                        val currentUser=LatestMessageActivity.currentUser
+                        adapter.add(MessageTo(chatMessage.text,currentUser!!))
                     }else{
-                        adapter.add(MessageFrom(chatMessage.text))
+
+                        adapter.add(MessageFrom(chatMessage.text,toUser!!))
                     }
                 }
             }
@@ -95,10 +98,10 @@ class ChatActivity : AppCompatActivity() {
         //check if the user class has hasExtra
         if(intent.hasExtra(NewMessage.USER_KEY)){
             //retrieving the parcelable object into user
-            user=intent.getParcelableExtra(NewMessage.USER_KEY)
+            toUser=intent.getParcelableExtra(NewMessage.USER_KEY)
         }
-        if(user!=null){
-            supportActionBar?.title= user?.userName
+        if(toUser!=null){
+            supportActionBar?.title= toUser?.userName
         }
     }
 
@@ -111,14 +114,21 @@ class ChatActivity : AppCompatActivity() {
         val fromId = mAuth.uid
 
         //uid of the receiver
-        val toId = user?.uid
+        val toId = toUser?.uid
         if(fromId==null || toId==null) {
             return
         }
-        val ref = db.getReference("/messages").push()
-        val chatMessage = Message(ref.key!!,text,fromId,toId,System.currentTimeMillis())
+        val ref = db.getReference("/user-messages/$fromId/$toId").push()
+        val toRef= db.getReference("/user-messages/$toId/$fromId").push()
+        val chatMessage = Message(ref.key!!,text,fromId,toId,System.currentTimeMillis()/1000)
         ref.setValue(chatMessage)
             .addOnSuccessListener {
+                Log.i(TAG,"Saved message in firebase")
+                etMessage.text.clear()
+                rvChatLog.scrollToPosition(adapter.itemCount-1)
+            }
+        toRef.setValue(chatMessage)
+            .addOnSuccessListener{
                 Log.i(TAG,"Saved message in firebase")
             }
     }
