@@ -6,14 +6,20 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import androidx.recyclerview.widget.RecyclerView
+import com.example.nithonline.adapter.LatestMessageAdapter
+import com.example.nithonline.model.Message
 import com.example.nithonline.model.User
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.GroupieViewHolder
 
 class LatestMessageActivity : AppCompatActivity() {
 
@@ -21,18 +27,68 @@ class LatestMessageActivity : AppCompatActivity() {
         private const val TAG="LatestMessageActivity"
         var currentUser : User?=null
     }
+    private lateinit var rvLatestMessage:RecyclerView
+    private var adapter = GroupAdapter<GroupieViewHolder>()
     private lateinit var mAuth: FirebaseAuth
-
     private var db = Firebase.database
+    val latestMessageMap =HashMap<String, Message>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_latest_message)
 
+        rvLatestMessage=findViewById(R.id.rv_latest_message)
         mAuth=FirebaseAuth.getInstance()
         db= FirebaseDatabase.getInstance()
 
+        rvLatestMessage.adapter=adapter
+
+        latestMessageListener()
         fetchCurrentUser()
         verifyUserIsLoggedIn()
+    }
+
+
+    private fun latestMessageListener() {
+        val fromId=mAuth.uid
+        val ref = db.getReference("/latest-messages/$fromId")
+
+        //for listening new nodes
+        ref.addChildEventListener(object: ChildEventListener{
+            //everytime a new node(user) is added we will get notified
+            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                val latestMessage = snapshot.getValue(Message::class.java)?: return
+
+                latestMessageMap[snapshot.key!!]=latestMessage
+                refreshRecyclerView()
+            }
+            //when the latest message changes it notifies us of the change
+            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+                val latestMessage =snapshot.getValue(Message::class.java) ?: return
+                latestMessageMap[snapshot.key!!]=latestMessage
+                refreshRecyclerView()
+            }
+
+            override fun onChildRemoved(snapshot: DataSnapshot) {
+
+            }
+
+            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
+
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+
+        })
+    }
+
+    //recycler view will refresh everytime there is a exchange of messages
+    private fun refreshRecyclerView() {
+        adapter.clear()
+        latestMessageMap.values.forEach{
+            adapter.add(LatestMessageAdapter(it))
+        }
     }
 
     private fun fetchCurrentUser() {

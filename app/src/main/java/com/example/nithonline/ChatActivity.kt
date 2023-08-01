@@ -131,5 +131,21 @@ class ChatActivity : AppCompatActivity() {
             .addOnSuccessListener{
                 Log.i(TAG,"Saved message in firebase")
             }
+
+        //setting up nodes for the latest messages
+        val latestMessageRef = db.getReference("/latest-messages/$fromId/$toId")
+
+        latestMessageRef.setValue(chatMessage)
+            .addOnSuccessListener{
+                Log.i(TAG,"Saved latest message in firebase")
+            }
+
+        val latestMessageToRef = db.getReference("/latest-messages/$toId/$fromId")
+
+        latestMessageToRef.setValue(chatMessage )
+            .addOnSuccessListener{
+                Log.i(TAG,"Saved latest message in firebase")
+            }
+
     }
 }
