@@ -1,5 +1,6 @@
 package com.example.nithonline.adapter
 
+import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import com.example.nithonline.R
@@ -16,6 +17,10 @@ import com.xwray.groupie.Item
 
 class LatestMessageAdapter(private val latestMessage:Message):Item<GroupieViewHolder>(){
 
+    var user: User?= null
+    companion object{
+        private const val TAG="LatestMessageAdapter"
+    }
     override fun bind(viewHolder: GroupieViewHolder, position: Int){
         val tvLatestMessage = viewHolder.itemView.findViewById<TextView>(R.id.tv_latest_message)
         val tvUsernameLatest = viewHolder.itemView.findViewById<TextView>(R.id.tv_username_latest)
@@ -23,24 +28,22 @@ class LatestMessageAdapter(private val latestMessage:Message):Item<GroupieViewHo
 
         tvLatestMessage.text=latestMessage.text
 
-        val recipientId:String
-        if(latestMessage.fromId==FirebaseAuth.getInstance().uid){
-            recipientId=latestMessage.toId
-        }
-        else{
-            recipientId=latestMessage.fromId
+        val recipientId:String = if(latestMessage.fromId==FirebaseAuth.getInstance().uid){
+            latestMessage.toId
+        } else{
+            latestMessage.fromId
         }
         val ref=FirebaseDatabase.getInstance().getReference("/users/$recipientId")
         //retrieving user name from database
         ref.addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
-                val user=snapshot.getValue(User::class.java)
+                user=snapshot.getValue(User::class.java)
                 tvUsernameLatest.text=user?.userName
                 Picasso.get().load(user?.imgUrl).into(ivDpLatest)
             }
 
             override fun onCancelled(error: DatabaseError) {
-
+                Log.i(TAG,"error occurred")
             }
 
         })

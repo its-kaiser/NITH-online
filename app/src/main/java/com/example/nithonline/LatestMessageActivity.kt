@@ -42,6 +42,13 @@ class LatestMessageActivity : AppCompatActivity() {
 
         rvLatestMessage.adapter=adapter
 
+        adapter.setOnItemClickListener{item, view->
+            Log.i(TAG,"Opening a chat log")
+            val intent= Intent(this,ChatActivity::class.java)
+            val userItem = item as LatestMessageAdapter
+            intent.putExtra(NewMessage.USER_KEY,userItem.user)
+            startActivity(intent)
+        }
         latestMessageListener()
         fetchCurrentUser()
         verifyUserIsLoggedIn()
