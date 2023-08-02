@@ -73,6 +73,7 @@ class ChatActivity : AppCompatActivity() {
                         adapter.add(MessageFrom(chatMessage.text,toUser!!))
                     }
                 }
+                rvChatLog.scrollToPosition(adapter.itemCount-1)
             }
 
             override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {

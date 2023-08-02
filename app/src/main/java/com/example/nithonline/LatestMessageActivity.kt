@@ -44,8 +44,10 @@ class LatestMessageActivity : AppCompatActivity() {
 
         adapter.setOnItemClickListener{item, view->
             Log.i(TAG,"Opening a chat log")
-            val intent= Intent(this,ChatActivity::class.java)
+
             val userItem = item as LatestMessageAdapter
+
+            val intent= Intent(this,ChatActivity::class.java)
             intent.putExtra(NewMessage.USER_KEY,userItem.user)
             startActivity(intent)
         }
