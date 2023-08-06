@@ -10,4 +10,6 @@
     <string name="profile_picture">Profile photo</string>
     <string name="message">Message</string>
     <string name="send">Send</string>
+    <string name="new_message">New Message</string>
+    <string name="sign_out">Sign out</string>
 </resources>

@@ -3,5 +3,6 @@
     <style name="Base.Theme.NITHOnline" parent="Theme.AppCompat.DayNight">
         <!-- Customize your dark theme here. -->
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <item name="colorPrimary">@color/yellow</item>
     </style>
 </resources>

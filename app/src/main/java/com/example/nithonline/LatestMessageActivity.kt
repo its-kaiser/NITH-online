@@ -78,7 +78,7 @@ class LatestMessageActivity : AppCompatActivity() {
             }
 
             override fun onChildRemoved(snapshot: DataSnapshot) {
-
+                
             }
 
             override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {

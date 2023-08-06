@@ -4,10 +4,12 @@
 
     <item
         android:id="@+id/mn_new_message"
-        android:title="New Message"
+        android:title="@string/new_message"
+        android:icon="@drawable/ic_search"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/mn_signout"
-        android:title="Sign out"
+        android:title="@string/sign_out"
+        android:icon="@drawable/ic_sign"
         app:showAsAction="ifRoom" />
 </menu>
